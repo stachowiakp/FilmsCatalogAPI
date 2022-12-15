@@ -9,13 +9,13 @@ namespace FilmsCatalog.Controllers
     [Route("/api/Films")]
     public class ReservationsController : ControllerBase
     {
-        private readonly IReservations Reservations;
+
         private readonly IFilms Films;
 
-        public ReservationsController(IReservations reservations,IFilms films)
+        public ReservationsController(IFilms films)
         {
-            this.Reservations = reservations;
-            this.Films= films;
+
+            this.Films = films;
         }
 
         [HttpGet]
@@ -26,22 +26,40 @@ namespace FilmsCatalog.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Film> GetFilm(Guid id)
+        public ActionResult<FilmDTO> GetFilm(Guid id)
         {
             var result = Films.GetFilm(id);
+            if (result == null) { return BadRequest(); }
+
+            else { return Extension.AsDTO(result); }
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult DeleteFilm(Guid id) {
+
+            Films.RemoveFilm(id);
+            return NoContent();
+        }
+
+        [HttpPost]
+        public ActionResult<Film> AddFilm(FilmDTO filmDTO)
+        {
+            Film film = new Film(filmDTO.Title);
+            Films.AddFilm(film);
+            return CreatedAtAction(nameof(GetFilm), new { id = film.Id }, Extension.AsDTO(film));
+        }
+
+        [HttpPut("{id}")]
+        public ActionResult<FilmDTO> UpdateFilmSchedule(Guid id, DateTimeOffset schedule)
+        {
+            Films.RescheduleFilm(id, schedule);
+            var result = GetFilm(id);
             return result;
+                
         }
 
         
-       /* private void ReservationsInit()
-        {
-            var filmslist = Films.GetFilms();
-            var numberoffilms=filmslist.Count<Film>();
-            if(numberoffilms > 0)
-            {
-                Reservation res1 = new Reservation(filmslist[0])
-            }
-        }*/
+       
         
     }
 }

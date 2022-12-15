@@ -4,13 +4,13 @@
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
-        public DateTime ScreeningDate { get; set; }
+        public DateTimeOffset ScreeningDate { get; set; }
 
         public Film(string title)
         {
             this.Title= title;
             this.Id= Guid.NewGuid();
-            this.ScreeningDate = DateTime.UtcNow.AddDays(1);
+            this.ScreeningDate = DateTimeOffset.UtcNow.AddDays(1);
         }
     }
 }

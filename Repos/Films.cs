@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System;
 using FilmsCatalog.Entities;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace FilmsCatalog.Repos
 {
@@ -17,7 +18,10 @@ namespace FilmsCatalog.Repos
         public Film GetFilm(Guid id)
         {
             var Index = FilmsCatalog.FindIndex(film => film.Id == id);
-            return FilmsCatalog[Index];
+            
+                return FilmsCatalog[Index];
+            
+            
         }
         public void AddFilm(Film film)
         {
@@ -29,7 +33,7 @@ namespace FilmsCatalog.Repos
             var Index = FilmsCatalog.FindIndex(film => film.Id == id);
             FilmsCatalog.RemoveAt(Index);
         }
-        public void RescheduleFilm(Guid id, DateTime schedule)
+        public void RescheduleFilm(Guid id, DateTimeOffset schedule)
         {
             var Index = FilmsCatalog.FindIndex(film => film.Id == id);
             FilmsCatalog[Index].ScreeningDate = schedule;

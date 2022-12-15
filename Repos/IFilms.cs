@@ -8,6 +8,6 @@ namespace FilmsCatalog.Repos
         Film GetFilm(Guid id);
         IEnumerable<Film> GetFilms();
         void RemoveFilm(Guid id);
-        void RescheduleFilm(Guid id, DateTime schedule);
+        void RescheduleFilm(Guid id, DateTimeOffset schedule);
     }
 }
