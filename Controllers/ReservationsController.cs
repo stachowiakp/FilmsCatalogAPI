@@ -28,8 +28,6 @@ namespace FilmsCatalog.Controllers
         [HttpGet("{id}")]
         public ActionResult<FilmDTO> GetFilm(Guid id)
         {
-            var result = Films.GetFilm(id);
-            if (result == null) { return BadRequest(); }
 
             else { return Extension.AsDTO(result); }
         }
