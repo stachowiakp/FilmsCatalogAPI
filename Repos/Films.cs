@@ -17,9 +17,13 @@ namespace FilmsCatalog.Repos
         public IEnumerable<Film> GetFilms() { return FilmsCatalog; }
         public Film GetFilm(Guid id)
         {
-            var Index = FilmsCatalog.FindIndex(film => film.Id == id);
-            
-                return FilmsCatalog[Index];
+            var Index = FilmsCatalog.FindIndex(existingFilm => existingFilm.Id == id);
+            if (Index == -1) { return null; }
+            else
+            {
+                var item= FilmsCatalog[Index];
+                return item;
+            }
             
             
         }

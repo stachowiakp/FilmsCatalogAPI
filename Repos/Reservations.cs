@@ -12,7 +12,11 @@ namespace FilmsCatalog.Repos
         public Reservation GetReservation(Guid id)
         {
             var Index = ReservationsCatalog.FindIndex(res => res.Id == id);
-            return ReservationsCatalog[Index];
+            if (Index == -1) { return null; }
+            else
+            {
+                return ReservationsCatalog[Index];
+            }
         }
 
         public IEnumerable<Reservation> GetAllReservations()

@@ -1,63 +1,43 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using FilmsCatalog;
 using FilmsCatalog.Repos;
 using FilmsCatalog.Entities;
 
 namespace FilmsCatalog.Controllers
 {
     [ApiController]
-    [Route("/api/Films")]
+    [Route("/Api/Reservations")]
     public class ReservationsController : ControllerBase
     {
-
-        private readonly IFilms Films;
-
-        public ReservationsController(IFilms films)
+        private readonly IReservations ReservationsCatalog;
+        
+        public ReservationsController(IReservations resCat)
         {
-
-            this.Films = films;
+            this.ReservationsCatalog = resCat; 
         }
 
         [HttpGet]
-        public IEnumerable<Film> GetFilms()
+        public IEnumerable<Reservation> GetReservations()
         {
-            var result = Films.GetFilms();
-            return result;
+            return ReservationsCatalog.GetAllReservations();
         }
 
         [HttpGet("{id}")]
-        public ActionResult<FilmDTO> GetFilm(Guid id)
+        public ActionResult<Reservation> GetReservation(Guid id)
         {
-
-            else { return Extension.AsDTO(result); }
-        }
-
-        [HttpDelete("{id}")]
-        public ActionResult DeleteFilm(Guid id) {
-
-            Films.RemoveFilm(id);
-            return NoContent();
+            var res = ReservationsCatalog.GetReservation(id);
+            if (res == null) { return BadRequest(); }
+            else { return res; }
         }
 
         [HttpPost]
-        public ActionResult<Film> AddFilm(FilmDTO filmDTO)
+        public ActionResult<Reservation> NewReservation(ReservationDTO resDTO)
         {
-            Film film = new Film(filmDTO.Title);
-            Films.AddFilm(film);
-            return CreatedAtAction(nameof(GetFilm), new { id = film.Id }, Extension.AsDTO(film));
+            
+                Reservation res = new Reservation(resDTO.FilmId, resDTO.FirstName, resDTO.LastName, resDTO.Email);
+                ReservationsCatalog.NewReservation(res);
+                return CreatedAtAction(nameof(GetReservation), new { id = res.Id }, Extension.AsReservationDTO(res));
+            //missing mechanism for checking Film's ID with resDTO.FilmId - reference to FilmsController instance of Films?
         }
-
-        [HttpPut("{id}")]
-        public ActionResult<FilmDTO> UpdateFilmSchedule(Guid id, DateTimeOffset schedule)
-        {
-            Films.RescheduleFilm(id, schedule);
-            var result = GetFilm(id);
-            return result;
-                
-        }
-
-        
-       
-        
     }
 }
+
