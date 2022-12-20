@@ -1,0 +1,3 @@
+﻿20.12.2022 - Pull request branch "AddMongoDB" to master
+20.12.2022 - Added MongoDB to Init commit - Films and Reservations are kept in MongoDB. Added mechanisms for checking Films screening date (user input)
+20.12.2022 - Started Change log file
