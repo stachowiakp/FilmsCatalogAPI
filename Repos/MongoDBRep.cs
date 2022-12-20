@@ -1,6 +1,8 @@
 ﻿using MongoDB.Driver;
 using MongoDB.Bson;
 using FilmsCatalog.Entities;
+using System.Globalization;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace FilmsCatalog.Repos
 {
@@ -43,13 +45,16 @@ namespace FilmsCatalog.Repos
         }
 
         
-        public void RescheduleFilm(Guid id, DateTimeOffset schedule)
+        public void RescheduleFilm(Guid id, DateTime DateTimeInput)
         {
-            var update = Builders<Film>.Update
-                .Set(f => f.ScreeningDate, schedule);
-
             var filter = FilmBuilder.Eq(item => item.Id, id);
-            FilmsCatalog.FindOneAndUpdate(filter, update);
+            
+            var update = Builders<Film>.Update
+                .Set(f => f.ScreeningDate, DateTimeInput);
+             
+                FilmsCatalog.FindOneAndUpdate(filter, update);
+           
+            
         }
 
         //Reservations methods

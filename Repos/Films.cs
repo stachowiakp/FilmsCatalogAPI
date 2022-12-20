@@ -9,9 +9,9 @@ namespace FilmsCatalog.Repos
     {
         public readonly List<Film> FilmsCatalog = new()
         {
-            new Film ("Titanic"),
-            new Film ("Die Hard"),
-            new Film ("Shrek")
+            new Film ("Titanic",new DateTime(2022,12,21,16,00,00)),
+            new Film ("Die Hard",new DateTime(2022,12,21,18,00,00)),
+            new Film ("Shrek",new DateTime(2022,12,21,21,30,00))
         };
 
         public IEnumerable<Film> GetFilms() { return FilmsCatalog; }
@@ -37,7 +37,7 @@ namespace FilmsCatalog.Repos
             var Index = FilmsCatalog.FindIndex(film => film.Id == id);
             FilmsCatalog.RemoveAt(Index);
         }
-        public void RescheduleFilm(Guid id, DateTimeOffset schedule)
+        public void RescheduleFilm(Guid id, DateTime schedule)
         {
             var Index = FilmsCatalog.FindIndex(film => film.Id == id);
             FilmsCatalog[Index].ScreeningDate = schedule;

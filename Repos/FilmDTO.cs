@@ -7,6 +7,6 @@ namespace FilmsCatalog.Repos
         [Required]
         public string Title { get; set; }
         public Guid Id { get; set; }
-        public DateTimeOffset ScreeningDate { get; set; }
+        public string ScreeningDate { get; set; }
     }
 }

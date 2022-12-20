@@ -7,7 +7,7 @@ namespace FilmsCatalog
     {
         public static FilmDTO AsFilmDTO(Film film)
         {
-            return new FilmDTO { Id = film.Id, ScreeningDate = film.ScreeningDate, Title = film.Title };
+            return new FilmDTO { Id = film.Id, ScreeningDate = (film.ScreeningDate).ToString(), Title = film.Title };
             
         }
 

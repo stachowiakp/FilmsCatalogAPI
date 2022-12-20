@@ -47,15 +47,29 @@ namespace FilmsCatalog.Controllers
         [HttpPost]
         public ActionResult<Film> AddFilm(FilmDTO filmDTO)
         {
-            Film film = new Film(filmDTO.Title);
-            Films.AddFilm(film);
-            return CreatedAtAction(nameof(GetFilm), new { id = film.Id }, Extension.AsFilmDTO(film));
+            DateTime schedule = DateTime.UtcNow;
+            if (DateTime.TryParse(filmDTO.ScreeningDate, out schedule))
+            {
+                Film film = new Film(filmDTO.Title, schedule);
+                Films.AddFilm(film);
+                return CreatedAtAction(nameof(GetFilm), new { id = film.Id }, Extension.AsFilmDTO(film));
+
+            }
+            else { return BadRequest(); }
+           
         }
 
         [HttpPut("{id}")]
-        public ActionResult<FilmDTO> UpdateFilmSchedule(Guid id, DateTimeOffset schedule)
+        public ActionResult<FilmDTO> UpdateFilmSchedule(Guid id, string DateTimeObject)
         {
-            Films.RescheduleFilm(id, schedule);
+            DateTime schedule = DateTime.UtcNow;
+            if (DateTime.TryParse(DateTimeObject, out schedule))
+            {
+                Films.RescheduleFilm(id,schedule);
+
+            }
+            else { return BadRequest(); }
+            
             var result = GetFilm(id);
             return result;
                 
