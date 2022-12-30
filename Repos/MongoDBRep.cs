@@ -89,5 +89,21 @@ namespace FilmsCatalog.Repos
         {
             
         }
+
+        public IEnumerable<Reservation> GetFilmReservations(string Title)
+        {
+            
+            var filmfilter = FilmBuilder.Eq(item => item.Title, Title);
+            if ((FilmsCatalog.Find(filmfilter).SingleOrDefault()) == null)
+            {
+                throw new Exception("Wrong Film Title");
+            }
+            else
+            {
+                var id = FilmsCatalog.Find(filmfilter).SingleOrDefault().Id;
+                var filter = ReservationBuilder.Eq(item => item.FilmId, id);
+                return ReservationsCatalog.Find(filter).ToList();
+            }
+        }
     }
 }

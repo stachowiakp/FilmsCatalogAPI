@@ -21,12 +21,20 @@ namespace FilmsCatalog.Controllers
             return ReservationsCatalog.GetAllReservations();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetReservationById/{id}")]
         public ActionResult<Reservation> GetReservation(Guid id)
         {
             var res = ReservationsCatalog.GetReservation(id);
             if (res == null) { return BadRequest(); }
             else { return res; }
+        }
+
+        [HttpGet("GetFilmReservations/{Title}")]
+        public ActionResult<IEnumerable<Reservation>> GetFilmReservations(string Title)
+        {
+            var res = ReservationsCatalog.GetFilmReservations(Title);
+            if (res == null) { return BadRequest(); }
+            else { return Ok(res); }
         }
 
         [HttpPost]

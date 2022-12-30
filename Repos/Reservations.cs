@@ -40,5 +40,23 @@ namespace FilmsCatalog.Repos
             var Index = ReservationsCatalog.FindIndex(res => res.Id == id);
             ReservationsCatalog.RemoveAt(Index);
         }
+
+        public IEnumerable<Reservation> GetFilmReservations(Guid FilmId)
+        {
+            
+
+            var Indexes = ReservationsCatalog.FindAll(res=>res.Id == FilmId);
+            if (Indexes.Count == 0) { return null; }
+            else
+            {
+                return Indexes;  
+                
+            }
+        }
+
+        public IEnumerable<Reservation> GetFilmReservations(string Title)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
