@@ -6,9 +6,9 @@ namespace FilmsCatalog.Repos
     {
         void DeleteReservation(Guid id);
         IEnumerable<Reservation> GetAllReservations();
-        IEnumerable<Reservation> GetFilmReservations(string Title);
+        IEnumerable<Reservation> GetReservationsByFilmID(Guid FilmID);
         Reservation GetReservation(Guid id);
         void NewReservation(Reservation reservation);
-        void UpdateReservation(Reservation reservation);
+        void UpdateReservation(Guid ID,Reservation reservation);
     }
 }

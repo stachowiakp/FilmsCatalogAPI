@@ -40,6 +40,7 @@ namespace FilmsCatalog.Controllers
         [HttpDelete("{id}")]
         public ActionResult DeleteFilm(Guid id) {
 
+
             Films.RemoveFilm(id);
             return NoContent();
         }
@@ -60,10 +61,10 @@ namespace FilmsCatalog.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult<FilmDTO> UpdateFilmSchedule(Guid id, string DateTimeObject)
+        public ActionResult<FilmDTO> UpdateFilmSchedule(Guid id, UpdateFilmDTO update)
         {
             DateTime schedule = DateTime.UtcNow;
-            if (DateTime.TryParse(DateTimeObject, out schedule))
+            if (DateTime.TryParse(update.ScreeningDate, out schedule))
             {
                 Films.RescheduleFilm(id,schedule);
 

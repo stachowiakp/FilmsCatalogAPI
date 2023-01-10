@@ -19,6 +19,8 @@ namespace FilmsCatalog
             var settings = builder.Configuration.GetSection(nameof(MongoCS))
                 .Get<MongoCS>();
 
+            var UserDBsettings = builder.Configuration.GetSection(nameof(MongoUsersDB))
+                .Get<MongoUsersDB>();
             // Add services to the container.
             builder.Services.AddSingleton< IFilms, MongoDBRep>();
             builder.Services.AddSingleton<IReservations, MongoDBRep>();

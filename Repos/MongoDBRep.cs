@@ -41,7 +41,20 @@ namespace FilmsCatalog.Repos
         public void RemoveFilm(Guid id)
         {
             var filter = FilmBuilder.Eq(item => item.Id, id);
-            FilmsCatalog.DeleteOne(filter);
+            
+            if (FilmsCatalog.Find(filter).SingleOrDefault() != null)
+            {
+                var ResFilter = ReservationBuilder.Eq(item => item.FilmId, id);
+                long ResCount = ReservationsCatalog.Find(ResFilter).CountDocuments();
+
+                if (ResCount == 0) { FilmsCatalog.DeleteOne(filter); }
+                else
+                {
+                    ReservationsCatalog.DeleteMany(ResFilter);
+                    FilmsCatalog.DeleteOne(filter);
+                }
+                
+            }
         }
 
         
@@ -62,6 +75,7 @@ namespace FilmsCatalog.Repos
         {
             var filter = ReservationBuilder.Eq(item => item.Id, id);
             ReservationsCatalog.DeleteOne(filter);
+            
         }
 
         public IEnumerable<Reservation> GetAllReservations()
@@ -85,23 +99,30 @@ namespace FilmsCatalog.Repos
             else {ReservationsCatalog.InsertOne(reservation); }
         }
 
-        public void UpdateReservation(Reservation reservation)
+        public void UpdateReservation(Guid ID, Reservation reservation)
         {
-            
+            var filter = ReservationBuilder.Eq(item => item.Id, ID);
+            if ((ReservationsCatalog.Find(filter).SingleOrDefault()) == null)
+            { throw new Exception("Wrong Reservation ID"); }
+            else {
+                ReservationsCatalog.FindOneAndReplace(filter, reservation);
+                
+               
+            }
+
         }
 
-        public IEnumerable<Reservation> GetFilmReservations(string Title)
+        public IEnumerable<Reservation> GetReservationsByFilmID(Guid FilmID)
         {
             
-            var filmfilter = FilmBuilder.Eq(item => item.Title, Title);
+            var filmfilter = FilmBuilder.Eq(item => item.Id, FilmID);
             if ((FilmsCatalog.Find(filmfilter).SingleOrDefault()) == null)
             {
-                throw new Exception("Wrong Film Title");
+                throw new Exception("Wrong Film ID");
             }
             else
             {
-                var id = FilmsCatalog.Find(filmfilter).SingleOrDefault().Id;
-                var filter = ReservationBuilder.Eq(item => item.FilmId, id);
+                var filter = ReservationBuilder.Eq(item => item.FilmId, FilmID);
                 return ReservationsCatalog.Find(filter).ToList();
             }
         }

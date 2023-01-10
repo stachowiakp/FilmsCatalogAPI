@@ -29,9 +29,9 @@ namespace FilmsCatalog.Repos
             ReservationsCatalog.Add(reservation);
         }
 
-        public void UpdateReservation(Reservation reservation)
+        public void UpdateReservation(Guid ID,Reservation reservation)
         {
-            var Index = ReservationsCatalog.FindIndex(res => res.Id == reservation.Id);
+            var Index = ReservationsCatalog.FindIndex(res => res.Id == ID);
             ReservationsCatalog[Index] = reservation;
         }
 
@@ -41,7 +41,7 @@ namespace FilmsCatalog.Repos
             ReservationsCatalog.RemoveAt(Index);
         }
 
-        public IEnumerable<Reservation> GetFilmReservations(Guid FilmId)
+        public IEnumerable<Reservation> GetReservationsByFilmID(Guid FilmId)
         {
             
 
@@ -52,11 +52,6 @@ namespace FilmsCatalog.Repos
                 return Indexes;  
                 
             }
-        }
-
-        public IEnumerable<Reservation> GetFilmReservations(string Title)
-        {
-            throw new NotImplementedException();
         }
     }
 }

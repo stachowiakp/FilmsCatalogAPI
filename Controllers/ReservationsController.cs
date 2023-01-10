@@ -29,22 +29,40 @@ namespace FilmsCatalog.Controllers
             else { return res; }
         }
 
-        [HttpGet("GetFilmReservations/{Title}")]
-        public ActionResult<IEnumerable<Reservation>> GetFilmReservations(string Title)
+        [HttpGet("GetReservationsByFilmID/{ID}")]
+        public ActionResult<IEnumerable<Reservation>> GetFilmReservations(Guid ID)
         {
-            var res = ReservationsCatalog.GetFilmReservations(Title);
+            var res = ReservationsCatalog.GetReservationsByFilmID(ID);
             if (res == null) { return BadRequest(); }
             else { return Ok(res); }
         }
 
         [HttpPost]
-        public ActionResult<Reservation> NewReservation(ReservationDTO resDTO)
+        public ActionResult<ReservationDTO> NewReservation(ReservationDTO resDTO)
         {
-            
-                Reservation res = new Reservation(resDTO.FilmId, resDTO.FirstName, resDTO.LastName, resDTO.Email);
+
+            Reservation res = new Reservation(resDTO.FilmId,resDTO.FirstName,resDTO.LastName,resDTO.Email);
+            res.Id = Guid.NewGuid();
+             
                 ReservationsCatalog.NewReservation(res);
                 return CreatedAtAction(nameof(GetReservation), new { id = res.Id }, Extension.AsReservationDTO(res));
             //missing mechanism for checking Film's ID with resDTO.FilmId - reference to FilmsController instance of Films?
+        }
+
+        [HttpPut("{Id}")]
+        public ActionResult<ReservationDTO> UpdateReservation(Guid id, ReservationDTO resUpdate)
+        { 
+            Reservation res = new Reservation(resUpdate.FilmId,resUpdate.FirstName,resUpdate.LastName, resUpdate.Email);
+            res.Id = id;
+            ReservationsCatalog.UpdateReservation(id,res);
+            return Ok(GetReservation(id));
+        }
+
+        [HttpDelete("{Id}")]
+        public ActionResult DeleteReservation(Guid id)
+        {
+            ReservationsCatalog.DeleteReservation(id);
+            return Ok();
         }
     }
 }
