@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using FilmsCatalog;
 using FilmsCatalog.Repos;
 using FilmsCatalog.Entities;
@@ -18,14 +18,19 @@ namespace FilmsCatalog.Controllers
             this.Films = films;
         }
 
-        [HttpGet]
-        public IEnumerable<Film> GetFilms()
+        [HttpGet] //Get all films in catalog
+        public IEnumerable<FilmDTO> GetFilms()
         {
-            var result = Films.GetFilms();
-            return result;
+            List<FilmDTO> DTO = new List<FilmDTO>();
+            var results = Films.GetFilms();
+            foreach(var result in results)
+            {
+                DTO.Add(Extension.AsFilmDTO(result));
+            }
+            return DTO;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}")] //Get film with given ID
         public ActionResult<FilmDTO> GetFilm(Guid id)
         {
             
@@ -37,16 +42,16 @@ namespace FilmsCatalog.Controllers
              }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}")] //Delete film with given ID
         public ActionResult DeleteFilm(Guid id) {
 
 
             Films.RemoveFilm(id);
-            return NoContent();
+            return Ok();
         }
 
-        [HttpPost]
-        public ActionResult<Film> AddFilm(FilmDTO filmDTO)
+        [HttpPost] //Add film to catalog (required input: string Title, DateTime Schedule)
+        public ActionResult<FilmDTO> AddFilm(FilmDTO filmDTO)
         {
             DateTime schedule = DateTime.UtcNow;
             if (DateTime.TryParse(filmDTO.ScreeningDate, out schedule))
@@ -60,7 +65,7 @@ namespace FilmsCatalog.Controllers
            
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id}")] //Update film record with given ID (required input: guid ID - to filter catalog, DateTime schedule - changed data)
         public ActionResult<FilmDTO> UpdateFilmSchedule(Guid id, UpdateFilmDTO update)
         {
             DateTime schedule = DateTime.UtcNow;
@@ -75,9 +80,5 @@ namespace FilmsCatalog.Controllers
             return result;
                 
         }
-
-        
-       
-        
     }
 }

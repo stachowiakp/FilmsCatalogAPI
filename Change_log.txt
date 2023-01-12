@@ -1,5 +1,5 @@
-﻿10.01.2023 - Fixed Reservations Update method, added mechanism for removing reservations when film is being removed, changed GetFilmReservations method 
-to "GetReservationsByFilmID"
+12.01.2023 - Clearing code, ensuring all outputs in controllers are using DTOs, ActionResults etc., added comments.
+10.01.2023 - Fixed Reservations Update method, added mechanism for removing reservations when film is being removed, changed GetFilmReservations method to "GetReservationsByFilmID"
 29.12.2022 - Added new method for reservations - GetFilmReservations - gets all reservations for given film (requires film title)
 20.12.2022 - Pull request branch "AddMongoDB" to master
 20.12.2022 - Added MongoDB to Init commit - Films and Reservations are kept in MongoDB. Added mechanisms for checking Films screening date (user input)

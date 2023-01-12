@@ -14,17 +14,26 @@ namespace FilmsCatalog
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            //serializers for MongoDB for different data types
             BsonSerializer.RegisterSerializer(new GuidSerializer(MongoDB.Bson.BsonType.String));
             BsonSerializer.RegisterSerializer(new DateTimeOffsetSerializer(MongoDB.Bson.BsonType.String));
+
+            //init of connection settings to MongoDB (Configuration = appsettings.json)
             var settings = builder.Configuration.GetSection(nameof(MongoCS))
                 .Get<MongoCS>();
 
             var UserDBsettings = builder.Configuration.GetSection(nameof(MongoUsersDB))
                 .Get<MongoUsersDB>();
             // Add services to the container.
-            builder.Services.AddSingleton< IFilms, MongoDBRep>();
+
+            //setting services and servers
+            builder.Services.AddSingleton<IFilms, MongoDBRep>();
             builder.Services.AddSingleton<IReservations, MongoDBRep>();
+
+            //init of MongoClient, using settings set in line 23
             builder.Services.AddSingleton<IMongoClient>(serviceProvider => {return new MongoClient(settings.ConnectionString);});
+
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
