@@ -4,7 +4,7 @@ using FilmsCatalog.Entities;
 using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace FilmsCatalog.Repos
-{
+{//This class is not really needed nor used - all methods below are served by MongoDBRep class. This one was just for testing.
     public class Films : IFilms
     {
         public readonly List<Film> FilmsCatalog = new()

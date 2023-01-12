@@ -1,7 +1,7 @@
 ﻿using FilmsCatalog.Entities;
 
 namespace FilmsCatalog.Repos
-{
+{//This class is not really needed nor used - all methods below are served by MongoDBRep class. This one was just for testing.
     public class Reservations : IReservations
     {
         private readonly List<Reservation> ReservationsCatalog = new()
