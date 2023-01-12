@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using FilmsCatalog;
 using FilmsCatalog.Repos;
 using FilmsCatalog.Entities;
@@ -45,6 +45,7 @@ namespace FilmsCatalog.Controllers
         [HttpDelete("{id}")] //Delete film with given ID
         public ActionResult DeleteFilm(Guid id) {
 
+
             Films.RemoveFilm(id);
             return Ok();
         }
@@ -68,7 +69,7 @@ namespace FilmsCatalog.Controllers
         public ActionResult<FilmDTO> UpdateFilmSchedule(Guid id, UpdateFilmDTO update)
         {
             DateTime schedule = DateTime.UtcNow;
-            if (DateTime.TryParse(DateTimeObject, out schedule))
+            if (DateTime.TryParse(update.ScreeningDate, out schedule))
             {
                 Films.RescheduleFilm(id,schedule);
 
@@ -79,9 +80,5 @@ namespace FilmsCatalog.Controllers
             return result;
                 
         }
-
-        
-       
-        
     }
 }

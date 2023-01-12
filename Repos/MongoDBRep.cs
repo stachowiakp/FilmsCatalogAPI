@@ -49,7 +49,6 @@ namespace FilmsCatalog.Repos
         public void RemoveFilm(Guid id) //Remove film with given ID
         {
             var filter = FilmBuilder.Eq(item => item.Id, id);
-
             if (FilmsCatalog.Find(filter).SingleOrDefault() != null)
             {
                 var ResFilter = ReservationBuilder.Eq(item => item.FilmId, id);
@@ -80,6 +79,7 @@ namespace FilmsCatalog.Repos
         {
             var filter = ReservationBuilder.Eq(item => item.Id, id);
             ReservationsCatalog.DeleteOne(filter);
+            
         }
 
         public IEnumerable<Reservation> GetAllReservations() //Get all reservations
@@ -121,11 +121,11 @@ namespace FilmsCatalog.Repos
             if ((FilmsCatalog.Find(filmfilter).SingleOrDefault()) == null)
             {
                 throw new Exception("Wrong Film ID"); //mechanism for checking if inputed FilmID is correct
+
             }
             else
             {
-                var id = FilmsCatalog.Find(filmfilter).SingleOrDefault().Id;
-                var filter = ReservationBuilder.Eq(item => item.FilmId, id);
+                var filter = ReservationBuilder.Eq(item => item.FilmId, FilmID);
                 return ReservationsCatalog.Find(filter).ToList();
             }
         }

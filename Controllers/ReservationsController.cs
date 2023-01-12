@@ -52,8 +52,10 @@ namespace FilmsCatalog.Controllers
         [HttpPost] //Add new reservation, required input: Guid FilmID, string: FirstName, LastName, Email
         public ActionResult<ReservationDTO> NewReservation(ReservationDTO resDTO)
         {
-            
-                Reservation res = new Reservation(resDTO.FilmId, resDTO.FirstName, resDTO.LastName, resDTO.Email);
+
+            Reservation res = new Reservation(resDTO.FilmId,resDTO.FirstName,resDTO.LastName,resDTO.Email);
+            res.Id = Guid.NewGuid();
+             
                 ReservationsCatalog.NewReservation(res);
                 return CreatedAtAction(nameof(GetReservation), new { id = res.Id }, Extension.AsReservationDTO(res));
            
@@ -69,6 +71,22 @@ namespace FilmsCatalog.Controllers
         }
 
         [HttpDelete("{Id}")] //Delete reservation with given Id
+        public ActionResult DeleteReservation(Guid id)
+        {
+            ReservationsCatalog.DeleteReservation(id);
+            return Ok();
+        }
+
+        [HttpPut("{Id}")]
+        public ActionResult<ReservationDTO> UpdateReservation(Guid id, ReservationDTO resUpdate)
+        { 
+            Reservation res = new Reservation(resUpdate.FilmId,resUpdate.FirstName,resUpdate.LastName, resUpdate.Email);
+            res.Id = id;
+            ReservationsCatalog.UpdateReservation(id,res);
+            return Ok(GetReservation(id));
+        }
+
+        [HttpDelete("{Id}")]
         public ActionResult DeleteReservation(Guid id)
         {
             ReservationsCatalog.DeleteReservation(id);
